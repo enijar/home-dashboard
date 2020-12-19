@@ -11,21 +11,14 @@ type Response = {
   data: any;
 };
 
-const DEFAULT_OPTIONS: Options = {
-  cache: {
-    ttl: 10000, // 1 min
-  },
-};
-
 export default async function fetchJson(
   url: string,
-  options: Options = DEFAULT_OPTIONS
+  options: Options = {}
 ): Promise<Response> {
   if (options.cache) {
     const data = cache.get(url);
     if (data !== null) return { valid: true, data };
   }
-
   try {
     const res = await fetch(url);
     const data = await res.json();
