@@ -3,7 +3,7 @@ import { Wrapper } from "./styles";
 import { formatDateTime } from "../../utils";
 import Widget from "../../components/widget/widget";
 
-export default function Time() {
+export default function Time({ style = {} }) {
   const [dateTime, setDateTime] = React.useState<string>(formatDateTime());
 
   React.useEffect(() => {
@@ -16,7 +16,7 @@ export default function Time() {
   }, []);
 
   return (
-    <Widget>
+    <Widget style={style}>
       <Wrapper>
         <time>{dateTime}</time>
       </Wrapper>

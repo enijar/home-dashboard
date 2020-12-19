@@ -16,7 +16,7 @@ function getIcon(icon: null | string): null | string {
   return `https://openweathermap.org/img/wn/${icon}@2x.png`;
 }
 
-export default function Weather() {
+export default function Weather({ style = {} }) {
   const location = useLocation();
   const url = React.useMemo(() => {
     if (location === null) return null;
@@ -37,7 +37,7 @@ export default function Weather() {
   );
 
   return (
-    <Widget>
+    <Widget style={style}>
       <Wrapper>
         <h3>{data?.location}</h3>
         <TemperatureIcon>

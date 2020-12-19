@@ -15,15 +15,18 @@ export default function Scroll({ maxHeight, height, children }: Props) {
   React.useEffect(() => {
     const element = wrapper.current;
     if (element === null) return;
-    function onResize(): void {
-      if (element === null) return;
+    function updateShowScrollIndicator(element: HTMLDivElement): void {
       setShowIndicator(
         element.scrollTop === 0 && element.clientHeight < element.scrollHeight
       );
     }
+    function onResize(): void {
+      if (element === null) return;
+      updateShowScrollIndicator(element);
+    }
     function onScroll(): void {
       if (element === null) return;
-      setShowIndicator(element.scrollTop === 0);
+      updateShowScrollIndicator(element);
     }
     onResize();
     onScroll();
@@ -34,6 +37,10 @@ export default function Scroll({ maxHeight, height, children }: Props) {
       element.removeEventListener("scroll", onScroll);
     };
   }, [wrapper]);
+
+  React.useEffect(() => {
+    console.log({ showIndicator });
+  }, [showIndicator]);
 
   return (
     <ThemeProvider theme={{ showIndicator }}>

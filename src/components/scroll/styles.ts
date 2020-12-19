@@ -7,6 +7,7 @@ const SCROLL_WIDTH = 0.75;
 export const Wrapper = styled.div`
   overflow: auto;
   -webkit-overflow-scrolling: touch;
+  height: 100%;
 
   ::-webkit-scrollbar-track,
   ::-webkit-scrollbar-thumb {
