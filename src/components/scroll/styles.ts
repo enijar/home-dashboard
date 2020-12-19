@@ -12,6 +12,8 @@ export const Wrapper = styled.div`
   ::-webkit-scrollbar-track,
   ::-webkit-scrollbar-thumb {
     border-radius: ${SCROLL_WIDTH / 2}em;
+    border-top-right-radius: 0;
+    border-bottom-left-radius: 0;
   }
 
   ::-webkit-scrollbar {
