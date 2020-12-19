@@ -15,6 +15,7 @@
 .DS_Store
 .env
 .idea
+.eslintcache
 
 npm-debug.log*
 yarn-debug.log*
