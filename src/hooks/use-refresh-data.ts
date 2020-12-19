@@ -10,12 +10,17 @@ export default function useRefreshData(
   const [data, setData] = React.useState<any>(onChange);
 
   React.useEffect(() => {
-    if (url === null) return;
-    if (Date.now() - lastFetchTime.current < ttl) return;
-    lastFetchTime.current = Date.now();
-    fetchJson(url).then(({ data }) => {
-      setData(onChange(data));
-    });
+    let nextFrame: number;
+    (function update() {
+      nextFrame = requestAnimationFrame(update);
+      if (url === null) return;
+      if (Date.now() - lastFetchTime.current < ttl) return;
+      lastFetchTime.current = Date.now();
+      fetchJson(url).then(({ data }) => {
+        setData(onChange(data));
+      });
+    })();
+    return () => cancelAnimationFrame(nextFrame);
   }, [ttl, url, onChange]);
 
   return data;
