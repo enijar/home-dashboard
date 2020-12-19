@@ -1,4 +1,6 @@
 import styled from "styled-components";
+import { rgba } from "polished";
+import vars from "../../config/vars";
 
 export const Wrapper = styled.div`
   position: relative;
@@ -9,7 +11,7 @@ export const Wrapper = styled.div`
     left: 0;
     padding: 0.25em 0;
     margin-bottom: 0.25em;
-    background-color: rgba(255, 255, 255, 0.9);
+    background-color: ${rgba(vars.colorBackground, 0.95)};
   }
 
   ol {

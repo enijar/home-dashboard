@@ -1,6 +1,7 @@
 import React from "react";
 import { ThemeProvider } from "styled-components";
 import { Content, Indicator, Wrapper } from "./styles";
+import emitter from "../../services/emitter";
 
 type Props = {
   maxHeight?: string | number;
@@ -32,15 +33,13 @@ export default function Scroll({ maxHeight, height, children }: Props) {
     onScroll();
     window.addEventListener("resize", onResize);
     element.addEventListener("scroll", onScroll);
+    const unListen = emitter.listen("scroll.update", onScroll);
     return (): void => {
       window.removeEventListener("resize", onResize);
       element.removeEventListener("scroll", onScroll);
+      unListen();
     };
   }, [wrapper]);
-
-  React.useEffect(() => {
-    console.log({ showIndicator });
-  }, [showIndicator]);
 
   return (
     <ThemeProvider theme={{ showIndicator }}>

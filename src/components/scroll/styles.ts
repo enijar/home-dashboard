@@ -1,6 +1,6 @@
 import styled, { css } from "styled-components";
+import { darken, lighten, rgba, linearGradient } from "polished";
 import vars from "../../config/vars";
-import { darken } from "polished";
 
 const SCROLL_WIDTH = 0.75;
 
@@ -19,11 +19,11 @@ export const Wrapper = styled.div`
   }
 
   ::-webkit-scrollbar-track {
-    background: ${vars.colorWhite900};
+    background-color: ${lighten(0.25, vars.colorBackground)};
   }
 
   ::-webkit-scrollbar-thumb {
-    background: ${vars.colorPrimary};
+    background-color: ${vars.colorPrimary};
 
     &:hover {
       background: ${darken(0.1, vars.colorPrimary)};
@@ -45,11 +45,13 @@ export const Indicator = styled.div`
   left: 0;
   width: 100%;
   height: ${INDICATOR_HEIGHT}em;
-  background: linear-gradient(
-    180deg,
-    rgba(255, 255, 255, 0) 0%,
-    rgba(255, 255, 255, 1) 100%
-  );
+  ${linearGradient({
+    colorStops: [
+      `${rgba(vars.colorBackground, 0)} 0%`,
+      `${rgba(vars.colorBackground, 1)} 100%`,
+    ],
+    toDirection: "to bottom",
+  })}
   display: flex;
   align-items: center;
   justify-content: center;
