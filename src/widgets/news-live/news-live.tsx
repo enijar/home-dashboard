@@ -18,6 +18,13 @@ export default function NewsLive({ youTubeCode = "9Auq9mYxFEE" }) {
         modestbranding: 1,
       },
     });
+    function onKeyDown(event: KeyboardEvent): void {
+      const key = event.key.toLowerCase();
+      if (player.current === null || !["m"].includes(key)) return;
+      player.current.muted = !player.current.muted;
+    }
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
   }, [youTubeCode]);
 
   return (
