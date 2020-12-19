@@ -2,43 +2,37 @@ import React from "react";
 import { Wrapper } from "./styles";
 import vars from "../../config/vars";
 import { objectToQueryString } from "../../utils";
-import fetchJson from "../../services/fetch-json";
 import Widget from "../../components/widget/widget";
 import Scroll from "../../components/scroll/scroll";
+import useRefreshData from "../../hooks/use-refresh-data";
 
-type Article = null | {
+type Article = {
   title?: null | string;
   url?: null | string;
 };
 
 type Result = {
-  title: undefined | string;
-  url: undefined | string;
+  title: string | undefined;
+  url: string | undefined;
 };
 
 export default function NewsHeadlines({ limit = 30 }) {
-  const [results, setResults] = React.useState<Result[]>([]);
-
-  React.useEffect(() => {
+  const url = React.useMemo(() => {
     const settingsQueryString = objectToQueryString({
       country: "gb",
       apiKey: process?.env?.REACT_APP_NEWS_API_KEY ?? "",
       pageSize: limit,
     });
-    fetchJson(
-      `https://newsapi.org/v2/top-headlines?${settingsQueryString}`
-    ).then(({ data }) => {
-      const articles = data?.articles ?? [];
-      setResults(
-        articles.map((article: Article) => {
-          return {
-            title: article?.title,
-            url: article?.url,
-          };
-        })
-      );
-    });
+    return `https://newsapi.org/v2/top-headlines?${settingsQueryString}`;
   }, [limit]);
+  const results: Result[] = useRefreshData(url, (res: any) => {
+    return (res?.articles ?? []).map(
+      (article: Article): Result => ({
+        title: article?.title ?? undefined,
+        url: article?.url ?? undefined,
+      })
+    );
+  });
 
   return (
     <Widget>

@@ -1,9 +1,9 @@
 import React from "react";
-import { Wrapper, TemperatureIcon, TemperatureIconImg } from "./styles";
-import { objectToQueryString, kelvinToCelsius } from "../../utils";
-import fetchJson from "../../services/fetch-json";
+import { TemperatureIcon, TemperatureIconImg, Wrapper } from "./styles";
+import { kelvinToCelsius, objectToQueryString } from "../../utils";
 import useLocation from "../../hooks/use-location";
 import Widget from "../../components/widget/widget";
+import useRefreshData from "../../hooks/use-refresh-data";
 
 type Result = {
   location?: null | string;
@@ -18,36 +18,32 @@ function getIcon(icon: null | string): null | string {
 
 export default function Weather() {
   const location = useLocation();
-  const [result, setResult] = React.useState<Result>({});
-
-  React.useEffect(() => {
-    if (location === null) return;
-
+  const url = React.useMemo(() => {
+    if (location === null) return null;
     const settingsQueryString = objectToQueryString({
       lat: location.lat,
       lon: location.lon,
       appid: process?.env?.REACT_APP_WEATHER_API_KEY ?? "",
     });
-
-    fetchJson(
-      `https://api.openweathermap.org/data/2.5/weather?${settingsQueryString}`
-    ).then(({ data }) => {
-      setResult({
-        location: data?.name ?? null,
-        temperature: kelvinToCelsius(data?.main?.feels_like ?? null),
-        icon: getIcon(data?.weather?.[0]?.icon ?? null),
-      });
-    });
+    return `https://api.openweathermap.org/data/2.5/weather?${settingsQueryString}`;
   }, [location]);
+  const data: Result = useRefreshData(
+    url,
+    (data: any): Result => ({
+      location: data?.name ?? null,
+      temperature: kelvinToCelsius(data?.main?.feels_like ?? null),
+      icon: getIcon(data?.weather?.[0]?.icon ?? null),
+    })
+  );
 
   return (
     <Widget>
       <Wrapper>
-        {result.location !== null && <h3>{result.location}</h3>}
+        <h3>{data?.location}</h3>
         <TemperatureIcon>
-          <TemperatureIconImg src={result.icon} />
+          <TemperatureIconImg src={data?.icon} />
           <p>
-            {result.temperature}
+            {data?.temperature}
             <sup>&deg;C</sup>
           </p>
         </TemperatureIcon>
