@@ -5,7 +5,6 @@ import { objectToQueryString } from "../../utils";
 import Widget from "../../components/widget/widget";
 import Scroll from "../../components/scroll/scroll";
 import useRefreshData from "../../hooks/use-refresh-data";
-import emitter from "../../services/emitter";
 
 type Article = {
   title?: null | string;
@@ -34,10 +33,6 @@ export default function NewsHeadlines({ limit = 30 }) {
       })
     );
   });
-
-  React.useEffect(() => {
-    emitter.emit("scroll.update");
-  }, [results]);
 
   return (
     <Widget>
