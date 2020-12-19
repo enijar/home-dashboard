@@ -5,15 +5,6 @@ import vars from "../../config/vars";
 export const Wrapper = styled.div`
   position: relative;
 
-  h3 {
-    position: sticky;
-    top: 0;
-    left: 0;
-    padding: 0.25em 0;
-    margin-bottom: 0.25em;
-    background-color: ${rgba(vars.colorBackground, 0.95)};
-  }
-
   ol {
     padding-left: 1.25em;
 
@@ -30,4 +21,14 @@ export const Wrapper = styled.div`
       }
     }
   }
+`;
+
+export const Title = styled.div`
+  position: sticky;
+  top: 0;
+  left: 0;
+  padding: 0.25em 0;
+  margin-bottom: 0.25em;
+  overflow: hidden;
+  background-color: ${rgba(vars.colorBackground, 0.95)};
 `;

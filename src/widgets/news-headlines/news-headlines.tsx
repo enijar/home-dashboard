@@ -1,5 +1,5 @@
 import React from "react";
-import { Wrapper } from "./styles";
+import { Title, Wrapper } from "./styles";
 import vars from "../../config/vars";
 import { objectToQueryString } from "../../utils";
 import Widget from "../../components/widget/widget";
@@ -45,7 +45,9 @@ export default function NewsHeadlines({ limit = 30 }) {
         <Scroll
           height={`calc((50vw - ${vars.widgetPadding * 2}em) * ${9 / 16})`}
         >
-          <h3>News Headlines</h3>
+          <Title>
+            <h3>News Headlines</h3>
+          </Title>
           <ol>
             {results.map((result, index) => {
               return (
